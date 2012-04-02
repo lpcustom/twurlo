@@ -1,21 +1,33 @@
 <?php
-/**
- * Manage links and settings of your Twurlo installation 
- */
+/* Manage links and settings of your Twurlo installation */
+
+// Create session
 session_start();
+
+// include configuration file and database class
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 
+// create database object
 $db = new Database($config);
+
+// if the database tables have not been created
 if(!$db->checkInitialized()) {
+    // try to create them and die if that fails
     if(!$db->initDB()) {
 	die("Unable to initialize database. Check your configuration.");
     }
 }
+
+// "a" POST or GET parameter is used for adding a link; check if it's present
+// we check this before checking for a valid user because we'll be passing this
+// to the login form if there's no user logged in, so we can resume adding the
+// link after login
 if(isset($_REQUEST['a'])) {
     $add_link = $_REQUEST['a'];
 }
 
+// Admin logged in?
 if(!isset($_SESSION['username'])) {
     if(isset($add_link)) {
 	header("Location: login.php?a=" . $add_link);
@@ -23,26 +35,36 @@ if(!isset($_SESSION['username'])) {
 	header("Location: login.php");
     }
 }
+
+// Do we have a sort order on the link list table?
 if(isset($_REQUEST['s'])) {
     $sort = $_REQUEST['s'];
 } else {
-    $sort = "date";
+    $sort = "timestamp";
 }
-if(isset($_REQUEST['p'])) {
-    $page = $_REQUEST['p'];
-} else {
-    $page = "1";
-}
-if(isset($_REQUEST['s'])) {
-    $search = $_REQUEST['s'];
-} else {
-    $search = "";
-}
+
+// is there a sort order direction set?
 if(isset($_REQUEST['d'])) {
     $direction = $_REQUEST['d'];
 } else {
     $direction = "DESC";
 }
+
+// Do we have a page number request for pagination?
+if(isset($_REQUEST['p'])) {
+    $page = $_REQUEST['p'];
+} else {
+    $page = "1";
+}
+
+// Is there a search query?
+if(isset($_REQUEST['q'])) {
+    $search = $_REQUEST['q'];
+} else {
+    $search = "";
+}
+
+// Get links for the the link table;
 $links = $db->getLinks($sort, $direction, $page, $search);
 ?>
 <!doctype html>
