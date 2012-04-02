@@ -11,6 +11,11 @@ class Database {
     private $name;
     private $db;
     
+    /**
+     * Constructor for Database class; Establishes a PDO connection with the 
+     * configured database.
+     * @param Array $config 
+     */
     public function Database($config) {
         $this->type = $config['type'];
         switch($this->type) {
@@ -25,8 +30,15 @@ class Database {
                 $this->name = $config['name'];
                 $this->db = new PDO("sqlite:" . $this->name);
                 break;
-            
         }
+    }
+    
+    /**
+     * Initial database tables
+     * @return boolean 
+     */
+    public function initDB() {
+        
     }
     
     
