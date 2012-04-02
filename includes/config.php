@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @author lpcustom 
  * Configuration file for twurlo.
  */
-
 /* Database configuration
  * ----------------------
  * We currently support MySQL. We plan to support PostgreSQL in a later release.
@@ -16,5 +16,4 @@ $config['db_name'] = "twurlo";
 $config['db_host'] = "localhost";
 $config['db_user'] = "twurlo";
 $config['db_pass'] = "twurlo";
-
 ?>

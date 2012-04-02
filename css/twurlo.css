@@ -3,3 +3,7 @@ body {
     font-size: 12px;
 }
 
+#heading_wrapper {
+    padding: 5px;
+    background-color: #ddd;
+}

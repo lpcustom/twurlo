@@ -2,17 +2,13 @@
 /**
  * Manage links and settings of your Twurlo installation 
  */
+session_start();
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 $installed = false;
 $db = new Database($config);
-if(!$db->checkInitialized()) {
-    if(!$db->initDB()) {
-        die("Couldn't initialize database. Verify that your configuration is correct.");
-    }
-}
-else {
-    $installed = true;
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
 }
 ?>
 <!doctype html>
@@ -27,7 +23,13 @@ else {
     <body>
         <div id="body_wrapper">
             <div id="heading_wrapper">
-                
+
+            </div>
+            <div id="content_wrapper">
+
+            </div>
+            <div id="footer_wrapper">
+
             </div>
         </div>
     </body>        
