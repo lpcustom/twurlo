@@ -18,17 +18,17 @@ class Database {
      * @param Array $config 
      */
     public function Database($config) {
-        $this->type = $config['type'];
+        $this->type = $config['db_type'];
         switch($this->type) {
             case "mysql":
-                $this->user = $config['user'];
-                $this->host = $config['host'];
-                $this->pass = $config['pass'];
-                $this->name = $config['name'];
+                $this->user = $config['db_user'];
+                $this->host = $config['db_host'];
+                $this->pass = $config['db_pass'];
+                $this->name = $config['db_name'];
                 $this->db = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db, $this->user, $this->pass);
                 break;
             case "sqlite":
-                $this->name = $config['name'];
+                $this->name = $config['db_name'];
                 $this->db = new PDO("sqlite:" . $this->name);
                 break;
         }
