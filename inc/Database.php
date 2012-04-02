@@ -51,6 +51,25 @@ class Database {
         }
     }
     
+    /**
+     * Check to see if the tables have been initialized
+     * @return boolean 
+     */
+    public function checkInitialized() {
+        try {
+            $tables = $this->db->list_tables();
+            if(count($tables) < 1) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        catch(PDOException $ex) {
+            return false;
+        }
+    }
+    
     private function __initMySQL() {
         try {
             $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `name` VARCHAR(128), `destination` TEXT);";
