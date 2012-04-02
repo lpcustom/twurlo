@@ -12,7 +12,7 @@ if(!$db->checkInitialized()) {
 	die("Unable to initialize database. Check your configuration.");
     }
 }
-if(!isset($_SESSION['user'])) {
+if(!isset($_SESSION['username'])) {
     header("Location: login.php");
 }
 ?>
