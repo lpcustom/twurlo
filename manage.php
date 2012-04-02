@@ -80,6 +80,9 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 		<h2 class="center">Welcome to your Twurlo Management Console - <a style="color: blue; text-decoration: none;"href="logout.php">logout</a></h2>
             </div>
             <div id="content_wrapper">
+		<?php if(isset($_SESSION['message'])): ?>
+		<div id="message"><?php echo $_SESSION['message']; unset($_SESSION['message']);?></div>
+		<?php endif; ?>
 		<form action="add.php" method="post">
 		    <table id="add_link">
 			<tr>
@@ -96,16 +99,26 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 		</form>
 		<?php if(isset($links) && $links !== false && count($links) > 0): ?>
     		<table id="link_list">
+		    <tr><td colspan="5" class="center"><h2>Links</h2></td></tr>
     		    <tr>
-    			<td class="center">timestamp</td>
-    			<td>destination</td>
-    			<td>short name</td>
+    			<td class="bold border_right">created</td>
+    			<td class="bold border_right">destination</td>
+    			<td class="bold border_right">short name</td>
+			<td class="bold border_right">clicks</td>
+			<td class="bold">options</td>
     		    </tr>
 		    <?php foreach($links as $link): ?>
 		    <tr>
-			<td><?php echo $link['timestamp']; ?></td>
-			<td><?php echo $link['destination']; ?></td>
-			<td><?php echo $config['baseurl'] . $link['shortname']; ?></td>
+			<td class="border_right"><?php echo $link['timestamp']; ?></td>
+			<td class="border_right"><?php echo $link['destination']; ?></td>
+			<td class="border_right"><?php echo $link['shortname']; ?></td>
+			<td class="border_right"><?php echo $db->getClickCount($link['id']); ?></td>
+			<td>
+			    <span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
+				<img src="images/clipboard.gif" alt="clipboard" />
+			    </span>
+			</td>
+			
 		    </tr>
 		    <?php endforeach; ?>
     		</table>
