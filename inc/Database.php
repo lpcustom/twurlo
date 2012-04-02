@@ -29,7 +29,7 @@ class Database {
                 break;
             case "sqlite":
                 $this->name = $config['db_name'];
-                $this->db = new PDO("sqlite:" . $this->name);
+                $this->db = new PDO("sqlite:inc/" . $this->name);
                 break;
         }
     }
@@ -57,12 +57,13 @@ class Database {
      */
     public function checkInitialized() {
         try {
-            $tables = $this->db->list_tables();
-            if(count($tables) < 1) {
-                return false;
+            $q = "SELECT 1 FROM `links`;";
+            $query = $this->db->prepare($q);
+            if($query) {
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         }
         catch(PDOException $ex) {
