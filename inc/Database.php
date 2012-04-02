@@ -1,7 +1,8 @@
 <?php
 /**
- * @author lpcustom
  * Class for interacting with the database.
+ * @author lpcustom
+ * 
  */
 class Database {
     private $type;
@@ -38,9 +39,39 @@ class Database {
      * @return boolean 
      */
     public function initDB() {
-        
+        switch($this->type) {
+            case "mysql":
+                return $this->__initMySQL();
+                break;
+            case "sqlite":
+                return $this->__initSQLite();
+                break;
+            default:
+                return false;
+        }
     }
     
+    private function __initMySQL() {
+        try {
+            $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `name` VARCHAR(128), `destination` TEXT);";
+            $query = $this->db->prepare($q);
+            return $query->execute();
+        }
+        catch(PDOException $ex) {
+            return false;
+        }
+    }
+    
+    private function __initSQLite() {
+        try {
+            $q = "CREATE TABLE links(id INTEGER PRIMARY KEY ASC, name TEXT, destination TEXT);";
+            $query = $this->db->prepare($q);
+            return $query->execute();
+        }
+        catch(PDOException $ex) {
+            return false;
+        }
+    }
     
     
 }
