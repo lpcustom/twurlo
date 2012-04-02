@@ -5,8 +5,13 @@
 session_start();
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
-$installed = false;
+
 $db = new Database($config);
+if(!$db->checkInitialized()) {
+    if(!$db->initDB()) {
+	die("Unable to initialize database. Check your configuration.");
+    }
+}
 if(!isset($_SESSION['user'])) {
     header("Location: login.php");
 }
@@ -22,11 +27,10 @@ if(!isset($_SESSION['user'])) {
     </head>
     <body>
         <div id="body_wrapper">
-            <div id="heading_wrapper">
-
+            <div id="heading_wrapper">	
             </div>
             <div id="content_wrapper">
-
+		
             </div>
             <div id="footer_wrapper">
 
