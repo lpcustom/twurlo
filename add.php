@@ -35,8 +35,8 @@ else {
 }
 
 if($db->addLink($url, $short)) {
-    // using "flash_message" in the session to communicate our messages
-    $_SESSION["flash_message"] = "Link added";
+    // using "message" in the session to communicate our messages
+    $_SESSION["message"] = "Link added";
     // redirect to manage.php
     header("Location: manage.php");
 }
