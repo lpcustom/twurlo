@@ -5,6 +5,7 @@
  * 
  **/
 
+require_once 'inc/config.php';
 
 
 ?>
