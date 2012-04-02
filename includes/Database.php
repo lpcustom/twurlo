@@ -32,6 +32,36 @@ class Database {
 	}
     }
 
+    
+    public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
+	$offset = (($page - 1) * 20) + 1;
+	if(isset($search) && $search != "") {
+	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search OR `shortname` LIKE :search ORDER BY :sort :direction LIMIT 20,:offset;";
+	    $query = $this->db->prepare($q);
+	    $results = $query->execute(array(
+		":search"   => "%" . $search . "%",
+		":search"   => "%" . $search . "%",
+		":sort"	    => $sort,
+		":direction"=> $direction,
+		":offset"   => $offset));
+	}
+	else {
+	    $q = "SELECT * FROM `links` ORDER BY :sort :direction LIMIT 20,:offset;";
+	    $query = $this->db->prepare($q);
+	    $results = $query->execute(array(
+		":sort"	    => $sort,
+		":direction"=> $direction,
+		":offset"   => $offset));
+	    
+	}
+	if($results !== false && count($results) > 0) {
+	    return $results;
+	}
+	else {
+	    return false;
+	}
+    }
+    
     /**
      * Initial database tables
      * @return boolean 
@@ -67,7 +97,7 @@ class Database {
 
     private function __initMySQL() {
 	try {
-	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `name` VARCHAR(128), `destination` TEXT);";
+	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP);";
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
@@ -75,6 +105,8 @@ class Database {
 	}
     }
 
+    
+    
 }
 
 ?>
