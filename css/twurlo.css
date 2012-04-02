@@ -7,3 +7,32 @@ body {
     padding: 5px;
     background-color: #ddd;
 }
+
+#login_wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+table#login {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+    border: 1px solid #aaa;
+    padding: 10px 30px;
+}
+
+table#login td {
+    padding: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.pad5 {
+    padding: 5px;
+}
