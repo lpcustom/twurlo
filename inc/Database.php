@@ -59,12 +59,22 @@ class Database {
         try {
             $q = "SELECT * FROM `links` WHERE id=1;";
             $query = $this->db->prepare($q);
-            $results = $query->execute();
-            if($results!==false && count($results) > 0) {
-                return true;
+            if($this->type=="sqlite") {
+                if($query) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else {
-                return false;
+                $results = $query->execute();
+                if($results!==false && count($results) > 0) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
         catch(PDOException $ex) {
