@@ -32,6 +32,33 @@ class Database {
 	}
     }
 
+    public function newShort() {
+	try {
+	    $q = "SELECT MAX(`id`) as `maxID` FROM `links`;";
+	    $query = $this->db->prepare($q);
+	    $results = $query->fetchAll();
+	    if($results != false && count($results) > 0) {
+		return $results[0]['maxID'];
+	    }
+	    else { 
+		return false;
+	    }
+	}
+	catch(PDOException $ex) {
+	    error_log($ex);
+	    return false;
+	}
+    }
+    
+    public function addLink($destination, $shortname) {
+	$now = time();
+	$q = "INSERT INTO `links`(`shortname`, `destination`, `timestamp`) VALUES(:shortname, :destination, :timestamp);";
+	$query = $this->db->prepare($q);
+	return $this->db->execute(array(
+	    ":shortname"    => $shortname,
+	    ":destination"  => $destination, 
+	    ":timestamp"    => $now));
+    }
     
     public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
 	$offset = (($page - 1) * 20) + 1;
