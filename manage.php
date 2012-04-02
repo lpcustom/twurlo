@@ -36,7 +36,7 @@ if(!isset($_SESSION['username'])) {
     <body>
         <div id="body_wrapper">
             <div id="heading_wrapper">	
-		<h2>Welcome to your Twurlo Management Console</h2>
+		<h2 class="center">Welcome to your Twurlo Management Console - <a style="color: blue; text-decoration: none;"href="logout.php">logout</a></h2>
             </div>
             <div id="content_wrapper">
 		<form action="add.php" method="post">
