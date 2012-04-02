@@ -64,7 +64,7 @@ class Database {
     
     // get a list of links based on given criteria
     public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
-	$offset = (($page - 1) * 20) + 1;
+	$offset = (($page - 1) * 20);
 	if(isset($search) && $search != "") {
 	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search1 OR `shortname` LIKE :search2 ORDER BY :sort :direction LIMIT 20,:offset;";
 	    $query = $this->db->prepare($q);
@@ -73,7 +73,6 @@ class Database {
 	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
 	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
 	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
-	    
 	    $query->execute();
 	}
 	else {
@@ -89,9 +88,12 @@ class Database {
 	    return $results;
 	}
 	else {
-	    print_r($query->errorInfo());
 	    return false;
 	}
+    }
+    
+    public function getClickCount() {
+	// @todo add logic to this
     }
     
     /**
@@ -128,8 +130,26 @@ class Database {
     }
 
     private function __initMySQL() {
+	$flag = true;
+	if(!$this->__createLinksTable()) { $flag = false; }
+	if(!$this->__createClicksTable()) { $flag = false; }
+	return $flag;	
+    }
+
+    private function __createLinksTable() {
 	try {
 	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP);";
+	    $query = $this->db->prepare($q);
+	    return $query->execute();
+	} catch(PDOException $ex) {
+	    return false;
+	}
+
+    }
+    
+    private function __createClicksTable() {
+	try {
+	    $q = "CREATE TABLE `clicks`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `link_id` int(11), `timestamp` TIMESTAMP, `referrer` TEXT);";
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
