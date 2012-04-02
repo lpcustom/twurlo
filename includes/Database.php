@@ -25,12 +25,8 @@ class Database {
                 $this->host = $config['db_host'];
                 $this->pass = $config['db_pass'];
                 $this->name = $config['db_name'];
-                $this->db = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db, $this->user, $this->pass);
-                break;
-            case "sqlite":
-                $this->name = $config['db_name'];
-                $this->db = new PDO("sqlite:inc/" . $this->name);
-                break;
+                $this->db = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->name, $this->user, $this->pass);
+                break;           
         }
     }
     
@@ -42,9 +38,6 @@ class Database {
         switch($this->type) {
             case "mysql":
                 return $this->__initMySQL();
-                break;
-            case "sqlite":
-                return $this->__initSQLite();
                 break;
             default:
                 return false;
@@ -59,23 +52,14 @@ class Database {
         try {
             $q = "SELECT * FROM `links` WHERE id=1;";
             $query = $this->db->prepare($q);
-            if($this->type=="sqlite") {
-                if($query) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+            
+            $results = $query->execute();
+            if($results!==false && count($results) > 0) {
+                return true;
             }
             else {
-                $results = $query->execute();
-                if($results!==false && count($results) > 0) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
+                return false;
+            }            
         }
         catch(PDOException $ex) {
             return false;
@@ -89,20 +73,12 @@ class Database {
             return $query->execute();
         }
         catch(PDOException $ex) {
+            echo $ex;
             return false;
         }
     }
     
-    private function __initSQLite() {
-        try {
-            $q = "CREATE TABLE links(id INTEGER PRIMARY KEY ASC, name TEXT, destination TEXT);";
-            $query = $this->db->prepare($q);
-            return $query->execute();
-        }
-        catch(PDOException $ex) {
-            return false;
-        }
-    }
+    
     
     
 }
