@@ -64,6 +64,7 @@ class Database {
     
     // get a list of links based on given criteria
     public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
+	// @todo - add try/catch to this
 	$offset = (($page - 1) * 20);
 	if(isset($search) && $search != "") {
 	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search1 OR `shortname` LIKE :search2 ORDER BY :sort :direction LIMIT 20,:offset;";
@@ -125,6 +126,7 @@ class Database {
 		return false;
 	    }
 	} catch(PDOException $ex) {
+	    error_log($ex);
 	    return false;
 	}
     }
@@ -142,6 +144,7 @@ class Database {
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
+	    error_log($ex);
 	    return false;
 	}
 
@@ -153,6 +156,7 @@ class Database {
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
+	    error_log($ex);
 	    return false;
 	}
     }
