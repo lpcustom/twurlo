@@ -2,8 +2,8 @@ Twurlo README
 -------------
 
 Twurlo is an open source link shortener and redirection script that can be used
-on any PHP-powered website. This allows site owners to create links to anywhere
-on the internet the wish, while keeping their links branded to their site.
+on most PHP-powered web sites. It allows site owners to create links to anywhere
+on the Internet the wish, while keeping their links branded to their site.
 
 Twurlo is currently capable of utilizing MySQL and SQLite database to hold link
 information. SQLite is the default.
@@ -11,9 +11,9 @@ information. SQLite is the default.
 Installation
 ------------
 Upload to a folder on your site. You can name it anything. For example, create a
-folder called twurlo. Put all the files in this folder. 
+folder called Twurlo. Put all the files in this folder. 
 
-If you want to utilize a MySQL database for twurlo, first create the database
+If you want to utilize a MySQL database for Twurlo, first create the database
 on your host. Then, edit the inc/config.php file accordingly. So that Twurlo
 can connect to the database.
 
