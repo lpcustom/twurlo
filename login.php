@@ -1,14 +1,15 @@
 <?php
 session_start();
-
 require_once 'includes/config.php';
 require_once 'includes/Database.php';
 $db = new Database($config);
+
 if(isset($_POST['username']) && isset($_POST['password'])) {
-    if($db->authenticate($_POST['username'], $_POST['password'])) {
-	$_SESSION['username'] = $db->getConfItem("username");
+    if(($_POST['username'] == $config['username']) &&  ($_POST['password'] == $config['password'])) {
+	$_SESSION['username'] == $_POST['username'];
 	header("Location: manage.php");
-    } else {
+    } 
+    else {
 	$error_message = "username/password combination incorrect";
     }
 }
