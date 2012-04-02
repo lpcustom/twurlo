@@ -6,6 +6,10 @@
  **/
 
 require_once 'inc/config.php';
-
+require_once 'inc/Database.php';
+$db = new Database($config);
+if(!$db->checkInitialized()) {
+    echo "Database isn't initialized.";
+}
 
 ?>
