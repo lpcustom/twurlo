@@ -36,9 +36,11 @@ class Database {
 	try {
 	    $q = "SELECT MAX(`id`) as `maxID` FROM `links`;";
 	    $query = $this->db->prepare($q);
+	    $query->execute();
 	    $results = $query->fetchAll();
+	    print_r($results);
 	    if($results != false && count($results) > 0) {
-		return $results[0]['maxID'];
+		return (string)$results[0]['maxID'] + 1;
 	    }
 	    else { 
 		return false;
@@ -50,41 +52,44 @@ class Database {
 	}
     }
     
+    // Add a link to the database; called from add.php
     public function addLink($destination, $shortname) {
 	$now = time();
-	$q = "INSERT INTO `links`(`shortname`, `destination`, `timestamp`) VALUES(:shortname, :destination, :timestamp);";
+	$q = "INSERT INTO `links`(`shortname`, `destination`) VALUES(:shortname, :destination);";
 	$query = $this->db->prepare($q);
-	return $this->db->execute(array(
+	return $query->execute(array(
 	    ":shortname"    => $shortname,
-	    ":destination"  => $destination, 
-	    ":timestamp"    => $now));
+	    ":destination"  => $destination));
     }
     
+    // get a list of links based on given criteria
     public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
 	$offset = (($page - 1) * 20) + 1;
 	if(isset($search) && $search != "") {
-	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search OR `shortname` LIKE :search ORDER BY :sort :direction LIMIT 20,:offset;";
+	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search1 OR `shortname` LIKE :search2 ORDER BY :sort :direction LIMIT 20,:offset;";
 	    $query = $this->db->prepare($q);
-	    $results = $query->execute(array(
-		":search"   => "%" . $search . "%",
-		":search"   => "%" . $search . "%",
-		":sort"	    => $sort,
-		":direction"=> $direction,
-		":offset"   => $offset));
+	    $query->bindParam(":search1", "%" . $search . "%", PDO::PARAM_STR);
+	    $query->bindParam(":search2", "%" . $search . "%", PDO::PARAM_STR);
+	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
+	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
+	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
+	    
+	    $query->execute();
 	}
 	else {
-	    $q = "SELECT * FROM `links` ORDER BY :sort :direction LIMIT 20,:offset;";
+	    $q = "SELECT * FROM `links` ORDER BY :sort :direction LIMIT :offset, 20;";
 	    $query = $this->db->prepare($q);
-	    $results = $query->execute(array(
-		":sort"	    => $sort,
-		":direction"=> $direction,
-		":offset"   => $offset));
-	    
+	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
+	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
+	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
+	    $query->execute();	    
 	}
+	$results = $query->fetchAll();
 	if($results !== false && count($results) > 0) {
 	    return $results;
 	}
 	else {
+	    print_r($query->errorInfo());
 	    return false;
 	}
     }
