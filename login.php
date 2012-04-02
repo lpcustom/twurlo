@@ -6,7 +6,7 @@ $db = new Database($config);
 
 if(isset($_POST['username']) && isset($_POST['password'])) {
     if(($_POST['username'] == $config['username']) &&  ($_POST['password'] == $config['password'])) {
-	$_SESSION['username'] == $_POST['username'];
+	$_SESSION['username'] = $_POST['username'];
 	header("Location: manage.php");
     } 
     else {
