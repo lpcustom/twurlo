@@ -57,9 +57,10 @@ class Database {
      */
     public function checkInitialized() {
         try {
-            $q = "SELECT 1 FROM `links`;";
+            $q = "SELECT * FROM `links` WHERE id=1;";
             $query = $this->db->prepare($q);
-            if($query) {
+            $results = $query->execute();
+            if($results!==false && count($results) > 0) {
                 return true;
             }
             else {
