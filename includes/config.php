@@ -23,4 +23,12 @@ $config['db_pass'] = "twurlo";	    // password for the database user
 $config['username'] = "admin";
 $config['password'] = "admin";
 /*******************************************************************************/
+
+$config['protocol'] = isset($_SERVER['HTTPS']) ? "https://" : "http://";
+
+// don't change these two lines
+$temp_path = $config['protocol'] . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$temp_remove = basename($temp_path, ".php".PHP_EOL);
+
+$config['baseurl'] = str_replace("/" . trim($temp_remove), "", $temp_path);
 ?>
