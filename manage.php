@@ -2,8 +2,8 @@
 /**
  * Manage links and settings of your Twurlo installation 
  */
-require_once 'inc/config.php';
-require_once 'inc/Database.php';
+require_once 'includes/config.php';
+require_once 'includes/Database.php';
 $installed = false;
 $db = new Database($config);
 if(!$db->checkInitialized()) {
