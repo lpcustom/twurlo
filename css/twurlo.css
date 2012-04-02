@@ -17,15 +17,15 @@ body_wrapper {
     text-align: center;
 }
 
-table#login {
+table {
     margin-right: auto;
     margin-left: auto;
-    margin-top: 50px;
+    margin-top: 5px;
     border: 1px solid #aaa;
     padding: 10px 30px;
 }
 
-table#login td {
+table td {
     padding: 10px;
 }
 
