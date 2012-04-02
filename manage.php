@@ -70,9 +70,7 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 <!doctype html>
 <html>
     <head>
-        <title>
-            Twurlo Management Console
-        </title>
+        <title>Twurlo Management Console</title>
         <link rel="stylesheet" href="css/reset.css" />
         <link rel="stylesheet" href="css/twurlo.css" />
     </head>
