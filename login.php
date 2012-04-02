@@ -4,10 +4,19 @@ require_once 'includes/config.php';
 require_once 'includes/Database.php';
 $db = new Database($config);
 
-if(isset($_POST['username']) && isset($_POST['password'])) {
-    if(($_POST['username'] == $config['username']) &&  ($_POST['password'] == $config['password'])) {
-	$_SESSION['username'] = $_POST['username'];
-	header("Location: manage.php");
+if(isset($_REQUEST['a'])) {
+    $add_link = $_REQUEST['a'];
+}
+
+if(isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
+    if(($_REQUEST['username'] == $config['username']) &&  ($_REQUEST['password'] == $config['password'])) {
+	$_SESSION['username'] = $_REQUEST['username'];
+	if(isset($add_link)) {
+	    header("Location: manage.php?a=" . $add_link);
+	}
+	else {
+	    header("Location: manage.php");
+	}
     } 
     else {
 	$error_message = "username/password combination incorrect";
@@ -24,6 +33,9 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
     <body>
 	<div id="login_wrapper">
 	    <form action="" method="post">
+		<?php if(isset($add_link) && $add_link != ""):?>
+		<input type="hidden" name="a" id="a" value="<?php echo $add_link; ?>" />
+		<?php endif;?>
 		<table id="login">
 		    <tr>
 			<td colspan="2" class="bold center">login to twurlo</td>
