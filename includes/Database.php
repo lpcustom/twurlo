@@ -21,7 +21,7 @@ class Database {
      */
     public function Database($config) {
 	$this->type = $config['db_type'];
-	switch ($this->type) {
+	switch($this->type) {
 	    case "mysql":
 		$this->user = $config['db_user'];
 		$this->host = $config['db_host'];
@@ -37,7 +37,7 @@ class Database {
      * @return boolean 
      */
     public function initDB() {
-	switch ($this->type) {
+	switch($this->type) {
 	    case "mysql":
 		return $this->__initMySQL();
 		break;
@@ -54,14 +54,13 @@ class Database {
 	try {
 	    $q = "SELECT * FROM `links` WHERE id=1;";
 	    $query = $this->db->prepare($q);
-
 	    $results = $query->execute();
-	    if ($results !== false && count($results) > 0) {
+	    if($results !== false && count($results) > 0) {
 		return true;
 	    } else {
 		return false;
 	    }
-	} catch (PDOException $ex) {
+	} catch(PDOException $ex) {
 	    return false;
 	}
     }
@@ -71,8 +70,7 @@ class Database {
 	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `name` VARCHAR(128), `destination` TEXT);";
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
-	} catch (PDOException $ex) {
-	    echo $ex;
+	} catch(PDOException $ex) {
 	    return false;
 	}
     }

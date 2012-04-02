@@ -7,7 +7,7 @@ require_once 'includes/config.php';
 require_once 'includes/Database.php';
 $installed = false;
 $db = new Database($config);
-if (!isset($_SESSION['user'])) {
+if(!isset($_SESSION['user'])) {
     header("Location: login.php");
 }
 ?>

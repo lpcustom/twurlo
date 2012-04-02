@@ -8,8 +8,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
     if($db->authenticate($_POST['username'], $_POST['password'])) {
 	$_SESSION['username'] = $db->getConfItem("username");
 	header("Location: manage.php");
-    }
-    else {
+    } else {
 	$error_message = "username/password combination incorrect";
     }
 }
@@ -20,7 +19,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
 	<link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/twurlo.css" />
     </head>
-    
+
     <body>
 	<div id="login_wrapper">
 	    <form action="" method="post">
@@ -42,7 +41,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
 			</td>
 		    </tr>
 		    <tr>
-			<td colspan="2" class="center"><?php if(isset($error_message)) { echo($error_message); }?></td>
+			<td colspan="2" class="center"><?php if(isset($error_message)) { echo($error_message);} ?></td>
 		    </tr>
 		</table>
 	    </form>
