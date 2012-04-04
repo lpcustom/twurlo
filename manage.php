@@ -73,6 +73,14 @@ $links = $db->getLinks($sort, $direction, $page, $search);
         <title>Twurlo Management Console</title>
         <link rel="stylesheet" href="css/reset.css" />
         <link rel="stylesheet" href="css/twurlo.css" />
+	<script type="text/javascript" src="includes/jquery.js"></script>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+		if(typeof($("#url")!== undefined)) {
+		    $("#url").focus();
+		}
+	    });
+	</script>
     </head>
     <body>
         <div id="body_wrapper">
@@ -98,30 +106,32 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 		    </table>
 		</form>
 		<?php if(isset($links) && $links !== false && count($links) > 0): ?>
-    		<table id="link_list">
-		    <tr><td colspan="5" class="center"><h2>Links</h2></td></tr>
-    		    <tr>
-    			<td class="bold border_right">created</td>
-    			<td class="bold border_right">destination</td>
-    			<td class="bold border_right">short name</td>
-			<td class="bold border_right">clicks</td>
-			<td class="bold">options</td>
-    		    </tr>
-		    <?php foreach($links as $link): ?>
-		    <tr>
-			<td class="border_right"><?php echo $link['timestamp']; ?></td>
-			<td class="border_right"><?php echo $link['destination']; ?></td>
-			<td class="border_right"><?php echo $link['shortname']; ?></td>
-			<td class="border_right"><?php echo $db->getClickCount($link['id']); ?></td>
-			<td>
-			    <span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
-				<img src="images/clipboard.gif" alt="clipboard" />
-			    </span>
-			</td>
-			
-		    </tr>
-		    <?php endforeach; ?>
-    		</table>
+		<div id="link_list_wrapper">
+		    <h2>Links</h2>
+		    <table id="link_list">		
+			<tr>
+			    <td width="120px" class="bold border_right">created</td>
+			    <td class="bold border_right">destination</td>
+			    <td class="bold border_right">short name</td>
+			    <td class="bold border_right">clicks</td>
+			    <td class="bold">options</td>
+			</tr>
+			<?php foreach($links as $link): ?>
+			<tr>
+			    <td class="border_right"><?php echo $link['timestamp']; ?></td>
+			    <td class="border_right"><?php echo $link['destination']; ?></td>
+			    <td class="border_right"><?php echo $link['shortname']; ?></td>
+			    <td class="border_right"><?php echo $db->getClickCount($link['id']); ?></td>
+			    <td>
+				<span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
+				    <img src="images/clipboard.gif" alt="clipboard" />
+				</span>
+			    </td>
+
+			</tr>
+			<?php endforeach; ?>
+		    </table>
+		</div>
 		<?php endif; ?>
             </div>
             <div id="footer_wrapper">
