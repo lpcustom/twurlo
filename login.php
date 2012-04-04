@@ -28,6 +28,13 @@ if(isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
         <title>Login to Twurlo</title>
 	<link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/twurlo.css" />
+	<script type="text/javascript" src="includes/jquery.js"></script>
+	<script type="text/javascript">
+	    $(document).ready(function(){
+		$("#username").focus();
+	    });
+	</script>
+	    
     </head>
 
     <body>
