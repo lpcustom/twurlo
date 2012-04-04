@@ -29,6 +29,16 @@ table#login td, table#add_link td {
     padding: 5px;
 }
 
+#link_list_wrapper {
+    margin-top: 20px;
+}
+
+#link_list_wrapper h2 {
+    margin-top:10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 table#link_list {
     width: 900px;
     margin-top: 20px;
