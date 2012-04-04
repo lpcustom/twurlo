@@ -112,22 +112,21 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 			<tr>
 			    <td width="120px" class="bold border_right">created</td>
 			    <td class="bold border_right">destination</td>
-			    <td class="bold border_right">short name</td>
-			    <td class="bold border_right">clicks</td>
+			    <td class="bold border_right center">short name</td>
+			    <td class="bold border_right center">clicks</td>
 			    <td class="bold">options</td>
 			</tr>
 			<?php foreach($links as $link): ?>
 			<tr>
 			    <td class="border_right"><?php echo $link['timestamp']; ?></td>
-			    <td class="border_right"><?php echo $link['destination']; ?></td>
-			    <td class="border_right"><?php echo $link['shortname']; ?></td>
-			    <td class="border_right"><?php echo $db->getClickCount($link['id']); ?></td>
+			    <td class="border_right"><a href="<?php echo $link['destination'];?>"><?php echo $link['destination']; ?></a></td>
+			    <td class="border_right center"><?php echo $link['shortname']; ?></td>
+			    <td class="border_right center"><?php echo $db->getClickCount($link['id']); ?></td>
 			    <td>
 				<span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
 				    <img src="images/clipboard.gif" alt="clipboard" />
 				</span>
 			    </td>
-
 			</tr>
 			<?php endforeach; ?>
 		    </table>
