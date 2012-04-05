@@ -103,6 +103,7 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 			    <td>(leave blank to generate automatically)</td>
 			    <td><input class="pad5" style="padding: 5px 30px;" type="submit" value="add" /></td>
 			</tr>
+			
 		    </table>
 		</form>
 		<?php if(isset($links) && $links !== false && count($links) > 0): ?>
@@ -121,7 +122,7 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 			    <td class="border_right"><?php echo $link['timestamp']; ?></td>
 			    <td class="border_right"><a href="<?php echo $link['destination'];?>"><?php echo $link['destination']; ?></a></td>
 			    <td class="border_right center">
-				<a href="<?php echo $config['baseurl'] . "/?l=" . $link['shortname'];?>"><?php echo $link['shortname']; ?></a>
+				<a target="_blank" href="<?php echo $config['baseurl'] . "/?l=" . $link['shortname'];?>"><?php echo $link['shortname']; ?></a>
 			    </td>
 			    <td class="border_right center"><?php echo $db->getClickCount($link['id']); ?></td>
 			    <td>
@@ -136,7 +137,7 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 		<?php endif; ?>
             </div>
             <div id="footer_wrapper">
-
+		<a target="_blank" href="javascript:void(location.href='<?php echo $config['baseurl'];?>/manage.php?a='+encodeURIComponent(location.href))">twurlo it!</a> &lt;--drag to bookmarks bar
             </div>
         </div>
     </body>        
