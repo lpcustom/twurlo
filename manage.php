@@ -120,7 +120,9 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 			<tr>
 			    <td class="border_right"><?php echo $link['timestamp']; ?></td>
 			    <td class="border_right"><a href="<?php echo $link['destination'];?>"><?php echo $link['destination']; ?></a></td>
-			    <td class="border_right center"><?php echo $link['shortname']; ?></td>
+			    <td class="border_right center">
+				<a href="<?php echo $config['baseurl'] . "/?l=" . $link['shortname'];?>"><?php echo $link['shortname']; ?></a>
+			    </td>
 			    <td class="border_right center"><?php echo $db->getClickCount($link['id']); ?></td>
 			    <td>
 				<span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
