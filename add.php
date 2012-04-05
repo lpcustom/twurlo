@@ -14,15 +14,17 @@ $db = new Database($config);
 // from manage.php, never directly.
 if(!isset($_SESSION['username'])) {
     header("Location: login.php");
+    die("redirected to login");
 }
 
 // get our destination url from form
-if(isset($_REQUEST['url']) && $_REQUEST['url']!="") { 
+if(isset($_REQUEST['url']) && trim($_REQUEST['url']) != "") { 
     $url = $_REQUEST['url']; 
 } 
 else { 
-    // die if we don't have at least this
-    die("Destination URL is required."); 
+    $_SESSION['message'] = "URL required in 'add a link' field.";
+    header("Location: manage.php");
+    die("this shouldn't be happening");
 }
 
 // get our short name from form if provided
@@ -32,6 +34,12 @@ if(isset($_REQUEST['short']) && $_REQUEST['short']!="") {
 else {
     // if not provided, create a new short name automagically
     $short = $db->newShort();
+}
+
+if(!$db->shortnameAvailable($short)) {
+    // flash error message
+    $_SESSION['message'] = "Short Name already exists";
+    header("Location: manage.php?a=" . $url);
 }
 
 if($db->addLink($url, $short)) {
