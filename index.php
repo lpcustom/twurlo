@@ -10,7 +10,7 @@ require_once 'includes/config.php';
 require_once 'includes/Database.php';
 $db = new Database($config);
 
-$referrer = $_SERVER['HTTP_REFERER'];
+@$referrer = $_SERVER['HTTP_REFERER'];
 
 if(!isset($_REQUEST['l'])) {
     die("No redirect link specified.");
