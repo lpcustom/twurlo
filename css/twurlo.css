@@ -7,6 +7,16 @@ body {
     padding: 0;
 }
 
+#message {
+    margin-top: 5px; 
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: red;
+    
+}
+
 #heading_wrapper {
     padding: 2px 20px;
     background-color: #ddd;
@@ -56,6 +66,11 @@ table#link_list {
 table#link_list td {
     border-top: 1px dotted #ddd;
     padding: 2px 4px;
+}
+
+#footer_wrapper {
+    margin-top: 20px;
+    text-align: center;
 }
 
 .center { text-align: center; }
