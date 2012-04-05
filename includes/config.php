@@ -24,11 +24,16 @@ $config['username'] = "admin";
 $config['password'] = "admin";
 /*******************************************************************************/
 
-$config['protocol'] = isset($_SERVER['HTTPS']) ? "https://" : "http://";
 
-// don't change these two lines
+// don't change these two lines; automatic baseurl finding
+$config['protocol'] = isset($_SERVER['HTTPS']) ? "https://" : "http://";
 $temp_path = $config['protocol'] . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $temp_remove = basename($temp_path, ".php".PHP_EOL);
+$temp_baseurl = str_replace("/" . trim($temp_remove), "", $temp_path);
 
-$config['baseurl'] = str_replace("/" . trim($temp_remove), "", $temp_path);
+// Change this only if your links aren't working correctly based on your baseurl. 
+$config['baseurl'] = $temp_baseurl;
+
+// Change this if you want to use 302 redirects instead of 301 redirects.
+$config['redirect_type'] = "301";
 ?>
