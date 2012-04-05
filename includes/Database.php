@@ -113,6 +113,23 @@ class Database {
 	}
     }
     
+    public function shortnameAvailable($short) {
+	try {
+	    $q = "SELECT * FROM `links` WHERE `shortname` = :short;";
+	    $query = $this->db->prepare($q);
+	    $query->execute(array(":short" => $short));
+	    $results = $query->fetchAll();
+	    if($results !== false && count($results) > 0) {
+		return false;
+	    }
+	    else { return true; }
+	}
+	catch(PDOException $ex) {
+	    error_log($ex);
+	    return false;
+	}
+    }
+    
     public function getLinkByShort($short) {
 	try {
 	    $q = "SELECT * FROM `links` WHERE `shortname` = :short;";
@@ -185,7 +202,7 @@ class Database {
 
     private function __createLinksTable() {
 	try {
-	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP);";
+	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP) UNIQUE KEY `shortname` (`shortname`);";
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
