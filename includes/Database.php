@@ -67,14 +67,15 @@ class Database {
 	// @todo - add try/catch to this
 	$offset = (($page - 1) * 20);
 	if(isset($search) && $search != "") {
-	    $q = "SELECT * FROM `links` WHERE `destination` LIKE :search1 OR `shortname` LIKE :search2 ORDER BY :sort :direction LIMIT 20,:offset;";
+	    $search = '%' . strtolower($search) . '%';
+	    $q = "SELECT * FROM `links` WHERE LOWER(`destination`) LIKE :search1 OR LOWER(`shortname`) LIKE :search2 ORDER BY :sort :direction LIMIT :offset, 20;";
 	    $query = $this->db->prepare($q);
-	    $query->bindParam(":search1", "%" . $search . "%", PDO::PARAM_STR);
-	    $query->bindParam(":search2", "%" . $search . "%", PDO::PARAM_STR);
+	    $query->bindParam(":search1", $search, PDO::PARAM_STR);
+	    $query->bindParam(":search2", $search, PDO::PARAM_STR);
 	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
 	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
 	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
-	    $query->execute();
+	    $query->execute();	    
 	}
 	else {
 	    $q = "SELECT * FROM `links` ORDER BY :sort :direction LIMIT :offset, 20;";
