@@ -94,8 +94,52 @@ class Database {
 	}
     }
     
-    public function getClickCount() {
-	// @todo add logic to this
+    public function getClickCount($id) {
+	try {
+	    $q = "SELECT COUNT(`id`) as `sum` FROM `clicks` WHERE `link_id` = :id;";
+	    $query = $this->db->prepare($q);
+	    $query->execute(array(
+		":id" => $id
+	    ));
+	    $results = $query->fetchAll();
+	    if($results !== false && count($results) > 0) {
+		return $results[0]['sum'];
+	    }
+	    else { return false; }
+	}
+	catch(PDOException $ex) {
+	    error_log($ex);
+	    return false;
+	}
+    }
+    
+    public function getLinkByShort($short) {
+	try {
+	    $q = "SELECT * FROM `links` WHERE `shortname` = :short;";
+	    $query = $this->db->prepare($q);
+	    $query->execute(array(":short" => $short));
+	    $results = $query->fetchAll();
+	    if($results !==false && count($results) > 0) {
+		return $results[0];
+	    }
+	    else {
+		return false;
+	    }
+	}
+	catch(PDOException $ex) {
+	    error_log($ex);
+	    return false;
+	}
+    }
+    
+    public function recordClick($link, $referrer) {
+	$q = "INSERT INTO `clicks`(`link_id`, `referrer`) VALUES(:link_id, :referrer);";
+	$query = $this->db->prepare($q);
+	return $query->execute(array(
+	    ":link_id"	=> $link['id'],
+	    ":referrer" => $referrer
+	));
+	
     }
     
     /**
