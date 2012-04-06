@@ -95,7 +95,10 @@ $links = $db->getLinks($sort, $direction, $page, $search);
 		    <table id="add_link">
 			<tr>
 			    <td>add a link</td>
-			    <td colspan="3"><input type="text" name="url" id="url" size="80" value="<?php echo (isset($add_link) && $add_link != "") ? $add_link : ""; ?>"></td>
+			    <td colspan="3">
+				<input type="text" name="url" id="url" size="80" value="<?php echo (isset($add_link) && $add_link != "") ? $add_link : ""; ?>">
+				(include http:// or https://)
+			    </td>
 			</tr>
 			<tr>
 			    <td>custom short name</td>
