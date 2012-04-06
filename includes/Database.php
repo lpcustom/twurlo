@@ -63,26 +63,23 @@ class Database {
     }
     
     // get a list of links based on given criteria
-    public function getLinks($sort = "timestamp", $direction = "DESC", $page = 1, $search = "") {
+    public function getLinks($page = 1, $search = "") {
 	// @todo - add try/catch to this
 	$offset = (($page - 1) * 20);
 	if(isset($search) && $search != "") {
 	    $search = '%' . strtolower($search) . '%';
-	    $q = "SELECT * FROM `links` WHERE LOWER(`destination`) LIKE :search1 OR LOWER(`shortname`) LIKE :search2 ORDER BY :sort :direction LIMIT :offset, 20;";
+	    $q = "SELECT * FROM `links` WHERE LOWER(`destination`) LIKE :search1 OR LOWER(`shortname`) LIKE :search2 ORDER BY `timestamp` DESC LIMIT :offset, 20;";
 	    $query = $this->db->prepare($q);
 	    $query->bindParam(":search1", $search, PDO::PARAM_STR);
 	    $query->bindParam(":search2", $search, PDO::PARAM_STR);
-	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
-	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
 	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
 	    $query->execute();	    
 	}
 	else {
-	    $q = "SELECT * FROM `links` ORDER BY :sort :direction LIMIT :offset, 20;";
+	    $q = "SELECT * FROM `links` ORDER BY `timestamp` DESC LIMIT :offset, 20;";
 	    $query = $this->db->prepare($q);
-	    $query->bindParam(":sort", $sort, PDO::PARAM_STR);
-	    $query->bindParam(":direction", $direction, PDO::PARAM_STR);
 	    $query->bindParam(":offset", $offset, PDO::PARAM_INT);
+	    print_r($query);
 	    $query->execute();	    
 	}
 	$results = $query->fetchAll();
