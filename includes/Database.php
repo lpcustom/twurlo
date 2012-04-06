@@ -202,7 +202,7 @@ class Database {
 
     private function __createLinksTable() {
 	try {
-	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP) UNIQUE KEY `shortname` (`shortname`);";
+	    $q = "CREATE TABLE `links`(`id` int(11) PRIMARY KEY AUTO_INCREMENT, `shortname` VARCHAR(128), `destination` TEXT, `timestamp` TIMESTAMP, UNIQUE KEY `shortname` (`shortname`));";
 	    $query = $this->db->prepare($q);
 	    return $query->execute();
 	} catch(PDOException $ex) {
