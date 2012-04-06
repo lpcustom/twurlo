@@ -36,19 +36,6 @@ if(!isset($_SESSION['username'])) {
     }
 }
 
-// Do we have a sort order on the link list table?
-if(isset($_REQUEST['s'])) {
-    $sort = $_REQUEST['s'];
-} else {
-    $sort = "timestamp";
-}
-
-// is there a sort order direction set?
-if(isset($_REQUEST['d'])) {
-    $direction = $_REQUEST['d'];
-} else {
-    $direction = "DESC";
-}
 
 // Do we have a page number request for pagination?
 if(isset($_REQUEST['p'])) {
@@ -65,7 +52,7 @@ if(isset($_REQUEST['q'])) {
 }
 
 // Get links for the the link table;
-$links = $db->getLinks($sort, $direction, $page, $search);
+$links = $db->getLinks($page, $search);
 ?>
 <!doctype html>
 <html>
