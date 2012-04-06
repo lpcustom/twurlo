@@ -51,6 +51,29 @@ if(isset($_REQUEST['q'])) {
     $search = "";
 }
 
+$link_count = $db->getLinkCount($search);
+if($link_count > 20) {
+    if($link_count % 20) {
+	$pages = floor(($link_count / 20)) + 1;
+    } else { $pages = floor($link_count / 20); } 
+}
+else {
+    $pages = 1;
+}
+$pagination = "";
+if($pages > 1) {
+    if($page > 1) { 
+	$pagination .= "<a href=\"" . $config['baseurl'] . "/manage.php?p=1\">&lt;&lt;</a>&nbsp;&nbsp;&nbsp;&nbsp;"; 
+	$pagination .= "<a href=\"" . $config['baseurl'] . "/manage.php?p=" . ($page - 1) . "\">&lt;</a>&nbsp;&nbsp;&nbsp;&nbsp;";	
+    }
+    
+    $pagination .= "Page " . $page . " of " . $pages . "&nbsp;&nbsp;&nbsp;&nbsp;";
+    if($pages > $page) {
+	$pagination .= "<a href=\"" . $config['baseurl'] . "/manage.php?p=" . ($page + 1) . "\">&gt;</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+	$pagination .= "<a href=\"" . $config['baseurl'] . "/manage.php?p=" . $pages . "\">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+    }   
+}
+
 // Get links for the the link table;
 $links = $db->getLinks($page, $search);
 ?>
@@ -67,6 +90,23 @@ $links = $db->getLinks($page, $search);
 		    $("#url").focus();
 		}
 	    });
+	    
+	    function deleteLink(id) {
+		if(confirm("Are you sure you want to delete this link?")) {
+		    $.ajax({
+			url: "delete.php?id=" + id,
+			dataType: "json",
+			success: function(data) {
+			    if(data.success == true) {
+				$("#link_" + id).remove();				
+			    }
+			    else {
+				alert(data.message);
+			    }
+			}
+		    });
+		}
+	    }
 	</script>
     </head>
     <body>
@@ -99,29 +139,38 @@ $links = $db->getLinks($page, $search);
 		<?php if(isset($links) && $links !== false && count($links) > 0): ?>
 		<div id="link_list_wrapper">
 		    <h2>Links</h2>
-		    <table id="link_list">		
+		    <table id="link_list">	
+			<tr>
+			    <td colspan="5" class="center pagination"><?php echo $pagination;?></td>
+			</tr>
 			<tr>
 			    <td width="120px" class="bold border_right">created</td>
 			    <td class="bold border_right">destination</td>
 			    <td class="bold border_right center">short name</td>
 			    <td class="bold border_right center">clicks</td>
-			    <td class="bold">options</td>
+			    <td class="bold center">options</td>
 			</tr>
 			<?php foreach($links as $link): ?>
-			<tr>
+			<tr id="link_<?php echo $link['id']; ?>">
 			    <td class="border_right"><?php echo $link['timestamp']; ?></td>
 			    <td class="border_right"><a href="<?php echo $link['destination'];?>"><?php echo $link['destination']; ?></a></td>
 			    <td class="border_right center">
 				<a target="_blank" href="<?php echo $config['baseurl'] . "/?l=" . $link['shortname'];?>"><?php echo $link['shortname']; ?></a>
 			    </td>
 			    <td class="border_right center"><?php echo $db->getClickCount($link['id']); ?></td>
-			    <td>
+			    <td class="center">
 				<span onclick="window.prompt('Copy to clipboard: Ctrl+c, Enter', '<?php echo $config['baseurl'] . "/?l=" .  $link['shortname'];?>')">
 				    <img src="images/clipboard.gif" alt="clipboard" />
+				</span>&nbsp;&nbsp;
+				<span onclick="deleteLink(<?php echo $link['id']?>);">
+				    <img src="images/x.gif" alt="delete" />
 				</span>
 			    </td>
 			</tr>
 			<?php endforeach; ?>
+			<tr>
+			    <td colspan="5" class="center pagination"><?php echo $pagination;?></td>
+			</tr>
 		    </table>
 		</div>
 		<?php endif; ?>
