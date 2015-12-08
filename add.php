@@ -18,9 +18,7 @@ if(!isset($_SESSION['username'])) {
 }
 
 // get our destination url from form
-if(isset($_REQUEST['url']) && trim($_REQUEST['url']) != "") { 
-    $url = $_REQUEST['url']; 
-} 
+if(isset($_REQUEST['url']) && trim($_REQUEST['url']) != "") { $url = $_REQUEST['url']; }
 else { 
     $_SESSION['message'] = "URL required in 'add a link' field.";
     header("Location: manage.php");
@@ -28,9 +26,7 @@ else {
 }
 
 // get our short name from form if provided
-if(isset($_REQUEST['short']) && $_REQUEST['short']!="") { 
-    $short = $_REQUEST['short']; 
-} 
+if(isset($_REQUEST['short']) && $_REQUEST['short']!="") { $short = $_REQUEST['short']; }
 else {
     // if not provided, create a new short name automagically
     $short = $db->newShort();
@@ -41,8 +37,14 @@ if(!$db->shortnameAvailable($short)) {
     $_SESSION['message'] = "Short Name already exists";
     header("Location: manage.php?a=" . $url);
 }
+if(!empty($_REQUEST['image']))          { $image = $_REQUEST['image']; }        else { $image       = ''; }
+if(!empty($_REQUEST['title']))          { $title = $_REQUEST['title']; }        else { $title       = ""; }
+if(!empty($_REQUEST['site_name']))      { $title = $_REQUEST['site_name']; }    else { $site_name   = ""; }
+if(!empty($_REQUEST['description']))    { $title = $_REQUEST['description']; }  else { $description = ""; }
 
-if($db->addLink($url, $short)) {
+
+
+if($db->addLink($url, $short, $site_name, $description, $title, $image)) {
     // using "message" in the session to communicate our messages
     $_SESSION["message"] = "Link added";
     // redirect to manage.php
